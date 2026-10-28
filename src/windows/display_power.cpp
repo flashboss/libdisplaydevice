@@ -60,4 +60,11 @@ namespace display_device {
 
     return std::make_unique<WinDisplayPowerGuard>(m_w_api);
   }
+
+  std::unique_ptr<DisplayPowerGuardInterface> WinDisplayPower::declareUserActivity(const std::string &reason) {
+    // Windows capture already stays active through the display-power request; there is no separate
+    // remote-user-activity assertion to refresh here.
+    static_cast<void>(reason);
+    return nullptr;
+  }
 }  // namespace display_device

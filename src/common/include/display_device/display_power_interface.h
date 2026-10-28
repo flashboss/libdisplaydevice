@@ -62,5 +62,17 @@ namespace display_device {
      * @returns A guard that owns the assertion, or nullptr if the assertion could not be created.
      */
     [[nodiscard]] virtual std::unique_ptr<DisplayPowerGuardInterface> keepDisplayAwake(const std::string &reason) = 0;
+
+    /**
+     * @brief Tell the platform that a remote user is active so capture keeps producing frames.
+     *
+     * Display-sleep prevention alone does not always stop ScreenCaptureKit from entering an idle
+     * or suspended state when the local keyboard and mouse are quiet. Platforms that cannot express
+     * remote user activity may return nullptr.
+     *
+     * @param reason Short human-readable reason for the platform power assertion.
+     * @returns A guard that owns the assertion, or nullptr if unsupported or unavailable.
+     */
+    [[nodiscard]] virtual std::unique_ptr<DisplayPowerGuardInterface> declareUserActivity(const std::string &reason) = 0;
   };
 }  // namespace display_device

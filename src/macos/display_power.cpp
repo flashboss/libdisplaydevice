@@ -126,6 +126,15 @@ namespace display_device {
     return std::make_unique<MacPowerAssertionGuard>(m_m_api, *assertion_id);
   }
 
+  std::unique_ptr<DisplayPowerGuardInterface> MacDisplayPower::declareUserActivity(const std::string &reason) {
+    const auto assertion_id {m_m_api->declareUserActivity(reason)};
+    if (!assertion_id.has_value()) {
+      return nullptr;
+    }
+
+    return std::make_unique<MacPowerAssertionGuard>(m_m_api, *assertion_id);
+  }
+
   bool MacDisplayPower::hasRequiredActiveDisplay(const std::string &display_name) const {
     const auto active_displays {m_m_api->getDisplayIds(MacQueryType::Active)};
     if (const auto display_id {parseDisplayId(display_name)}; display_id.has_value()) {

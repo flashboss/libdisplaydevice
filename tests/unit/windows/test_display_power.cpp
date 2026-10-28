@@ -73,3 +73,7 @@ TEST_F_S(KeepDisplayAwakeReturnsNullptrWhenApiFails) {
 
   EXPECT_EQ(m_power.keepDisplayAwake("Test capture"), nullptr);
 }
+
+TEST_F_S(DeclareUserActivityIsUnsupported) {
+  EXPECT_EQ(m_power.declareUserActivity("Test remote input"), nullptr);
+}

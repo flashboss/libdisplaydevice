@@ -33,6 +33,11 @@ namespace display_device {
      */
     [[nodiscard]] std::unique_ptr<DisplayPowerGuardInterface> keepDisplayAwake(const std::string &reason) override;
 
+    /**
+     * @copydoc DisplayPowerInterface::declareUserActivity
+     */
+    [[nodiscard]] std::unique_ptr<DisplayPowerGuardInterface> declareUserActivity(const std::string &reason) override;
+
   private:
     /**
      * @brief Check if the requested display is already active.

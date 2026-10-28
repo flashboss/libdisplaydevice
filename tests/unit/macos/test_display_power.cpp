@@ -58,6 +58,29 @@ TEST_F_S(KeepDisplayAwakeReturnsNullptrWhenAssertionFails) {
   EXPECT_EQ(m_power.keepDisplayAwake("Test capture"), nullptr);
 }
 
+TEST_F_S(DeclareUserActivityCreatesAndReleasesAssertion) {
+  InSequence sequence;
+  EXPECT_CALL(*m_layer, declareUserActivity("Test remote input"))
+    .Times(1)
+    .WillOnce(Return(display_device::MacPowerAssertionId {9}));
+  EXPECT_CALL(*m_layer, releasePowerAssertion(9))
+    .Times(1)
+    .WillOnce(Return(true));
+
+  {
+    const auto guard {m_power.declareUserActivity("Test remote input")};
+    ASSERT_NE(guard, nullptr);
+  }
+}
+
+TEST_F_S(DeclareUserActivityReturnsNullptrWhenAssertionFails) {
+  EXPECT_CALL(*m_layer, declareUserActivity("Test remote input"))
+    .Times(1)
+    .WillOnce(Return(std::nullopt));
+
+  EXPECT_EQ(m_power.declareUserActivity("Test remote input"), nullptr);
+}
+
 TEST_F_S(WakeDisplayReturnsTrueWhenRequestedDisplayIsAlreadyActive) {
   EXPECT_CALL(*m_layer, getDisplayIds(display_device::MacQueryType::Active))
     .Times(1)
